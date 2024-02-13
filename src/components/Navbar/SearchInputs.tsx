@@ -10,7 +10,7 @@ type SearchInputProps = {
 const SearchInput: React.FC<SearchInputProps> = ({user}) => {
 
     return (
-      <Flex flexGrow={1} mr={2} width={ user ? "auto" : "400px"} align="center">
+      <Flex flexGrow={1} mr={2} width={ {user} ? "auto" : "400px"} align="center">
         <InputGroup>
           <InputLeftElement
             pointerEvents="none"
