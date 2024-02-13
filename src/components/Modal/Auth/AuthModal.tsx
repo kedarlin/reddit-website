@@ -21,7 +21,7 @@ const AuthModal: React.FC = () => {
     }
     useEffect(() => {
         if (user) handleClose();
-    }, [user]);
+    }, [user, handleClose]);
 
     return (
         <>
