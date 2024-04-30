@@ -7,13 +7,14 @@ import safeJsonStringify from "safe-json-stringify";
 import NotFound from "../../../components/Community/NotFound";
 import Header from "@/src/components/Community/Header";
 import PageContent from "@/src/components/Layout/PageContent";
+import CreatePostLink from "@/src/hooks/CreatePostLink";
+import Posts from "@/src/components/Posts/Posts";
 
 type CommunityPageProps = {
   communityData: Community;
 };
 
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
-  console.log(communityData);
   if(!communityData) {
     return <NotFound />;
   }
@@ -22,7 +23,10 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
     <>
         <Header communityData={communityData} />
         <PageContent>
-            <><div>LHS</div></>
+            <>
+              <CreatePostLink />
+              <Posts communityData={communityData} />
+            </>
             <><div>RHS</div></>
         </PageContent>
     </>
