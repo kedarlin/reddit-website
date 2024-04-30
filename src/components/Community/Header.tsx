@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
       <Flex justify="center" bg="white" flexGrow={1}>
         <Flex width="95%" maxWidth="860px">
           {communityData.imageUrl ? (
-            <Image />
+            <Image alt="sample"/>
           ) : (
             <Icon
               as={FaReddit}
