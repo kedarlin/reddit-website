@@ -19,15 +19,19 @@ type CommunityPageProps = {
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   const setCommunityStateValue = useSetRecoilState(communityState);
 
+  useEffect(() => {
+    if (communityData) {
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        currentCommunity: communityData,
+      }));
+    }
+  }, [communityData, setCommunityStateValue]);
+
   if (!communityData) {
     return <NotFound />;
   }
-  useEffect(() => {
-    setCommunityStateValue((prev) => ({
-      ...prev,
-      currentCommunity: communityData,
-    }));
-  }, []);
+
   return (
     <>
       <Header communityData={communityData} />
@@ -43,6 +47,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
     </>
   );
 };
+
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const communityDocRef = doc(
@@ -58,11 +63,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
           ? JSON.parse(
               safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() })
             )
-          : "",
+          : null, // Use null instead of an empty string
       },
     };
   } catch (error) {
     console.log("getServerSide", error);
+    return {
+      props: {
+        communityData: null,
+      },
+    };
   }
 }
 
