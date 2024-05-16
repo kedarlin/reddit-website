@@ -13,25 +13,27 @@ import {
   writeBatch,
   doc,
   increment,
+  getDoc,
 } from "firebase/firestore";
 import { authModalState } from "../atoms/authModalAtom";
+import { useRouter } from "next/router";
 
 const useCommunityData = () => {
   const [user] = useAuthState(auth);
   const [communityStateValue, setCommunityStateValue] =
     useRecoilState(communityState);
-    const setAuthModalState = useSetRecoilState(authModalState);
+  const setAuthModalState = useSetRecoilState(authModalState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const onJoinOrLeaveCommunity = (
     communityData: Community,
     isJoined: boolean
   ) => {
-
-    if(!user) {
-        setAuthModalState({ open: true, view: "login"});
-        return;
+    if (!user) {
+      setAuthModalState({ open: true, view: "login" });
+      return;
     }
     if (isJoined) {
       leaveCommunity(communityData.id);
@@ -101,28 +103,49 @@ const useCommunityData = () => {
       });
       await batch.commit();
 
-      setCommunityStateValue(prev => ({
+      setCommunityStateValue((prev) => ({
         ...prev,
-        mySnippets: prev.mySnippets.filter(item => item.communityId !== communityId),
+        mySnippets: prev.mySnippets.filter(
+          (item) => item.communityId !== communityId
+        ),
       }));
-
     } catch (error: any) {
       console.log("leave community error", error.message);
       setError(error.message);
     }
   };
+  const getCommunityData = async (communityId: string) => {
+    try {
+      const communityDocRef = doc(firestore, "communities", communityId);
+      const communityDoc = await getDoc(communityDocRef);
 
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        currentCommunity: {
+          id: communityDoc.id,
+          ...communityDoc.data(),
+        } as Community,
+      }));
+    } catch (error) {
+      console.log("getCommunityData error", error);
+    }
+  };
   useEffect(() => {
     if (!user) {
-      setCommunityStateValue(prev => ({
+      setCommunityStateValue((prev) => ({
         ...prev,
-        mySnippets: []
-      }))
+        mySnippets: [],
+      }));
       return;
-    };
+    }
     getMySnippets();
   }, [user]);
-
+  useEffect(() => {
+    const { communityId } = router.query;
+    if (communityId && !communityStateValue.currentCommunity) {
+      getCommunityData(communityId as string);
+    }
+  }, [router.query, communityStateValue.currentCommunity]);
   return {
     communityStateValue,
     onJoinOrLeaveCommunity,
