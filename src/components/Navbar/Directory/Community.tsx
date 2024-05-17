@@ -18,6 +18,23 @@ const Community: React.FC<CommunityProps> = () => {
       <CreateCommunity open={open} handleClose={() => setOpen(false)} />
       <Box mt={3} mb={4}>
         <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
+          MODERATING
+        </Text>
+        {mySnippets
+          .filter((snippet) => snippet.isModerator)
+          .map((snippet) => (
+            <MenuListItem
+              key={snippet.communityId}
+              icon={FaReddit}
+              displayText={`r/${snippet.communityId}`}
+              link={`/r/${snippet.communityId}`}
+              iconColor="brand.100"
+              imageURL={snippet.imageURL}
+            />
+          ))}
+      </Box>
+      <Box mt={3} mb={4}>
+        <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
           MY COMMMUNITIES
         </Text>
         <MenuItem
