@@ -116,7 +116,7 @@ const PostItem: React.FC<PostItemProps> = ({
           cursor="pointer"
         />
       </Flex>
-      <Flex direction="column" width="100%">
+      <Flex direction="column" width="90%">
         {error && (
           <Alert status="error">
             <AlertIcon />
