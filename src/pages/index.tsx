@@ -18,6 +18,8 @@ import { Stack } from "@chakra-ui/react";
 import CreatePostLink from "../hooks/CreatePostLink";
 import PostItem from "../components/Posts/PostItem";
 import useCommunityData from "../hooks/useCommunityData";
+import Recommendations from "../components/Community/Recommendations";
+import PersonalHome from "../components/Community/PersonalHome";
 
 const Home: NextPage = () => {
   const [user, loadingUser] = useAuthState(auth);
@@ -146,7 +148,10 @@ const Home: NextPage = () => {
           </Stack>
         )}
       </>
-      <></>
+      <>
+        <Recommendations />
+        <PersonalHome />
+      </>
     </PageContent>
   );
 };
