@@ -34,32 +34,46 @@ const Home: NextPage = () => {
   const { communityStateValue } = useCommunityData();
 
   const buildUserHomeFeed = async () => {
+    setLoading(true);
     try {
-      if (communityStateValue.mySnippets.length) {
-        const myCommunityIds = communityStateValue.mySnippets.map(
-          (snippet) => snippet.communityId
-        );
-        const postQuery = query(
-          collection(firestore, "posts"),
-          where("communityId", "in", myCommunityIds),
-          orderBy("createdAt", "desc"),
-          limit(10)
-        );
-        const postDocs = await getDocs(postQuery);
-        const posts = postDocs.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setPostStateValue((prev) => ({
-          ...prev,
-          posts: posts as Post[],
-        }));
-      } else {
-        buildNoUserHomeFeed();
-      }
+      const myCommunityIds = communityStateValue.mySnippets.map(
+        (snippet) => snippet.communityId
+      );
+  
+      const userCommunitiesPostQuery = query(
+        collection(firestore, "posts"),
+        where("communityId", "in", myCommunityIds),
+        orderBy("createdAt", "desc"),
+        limit(10)
+      );
+      const userCommunitiesPostDocs = await getDocs(userCommunitiesPostQuery);
+      const userCommunitiesPosts = userCommunitiesPostDocs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+  
+      const otherCommunitiesPostQuery = query(
+        collection(firestore, "posts"),
+        where("communityId", "not-in", myCommunityIds),
+        orderBy("createdAt", "desc"),
+        limit(10)
+      );
+      const otherCommunitiesPostDocs = await getDocs(otherCommunitiesPostQuery);
+      const otherCommunitiesPosts = otherCommunitiesPostDocs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+  
+      const combinedPosts = [...userCommunitiesPosts, ...otherCommunitiesPosts];
+
+      setPostStateValue((prev) => ({
+        ...prev,
+        posts: combinedPosts as Post[],
+      }));
     } catch (error) {
       console.log("getUserHomeFeed error", error);
     }
+    setLoading(false);
   };
 
   const buildNoUserHomeFeed = async () => {
@@ -107,11 +121,11 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (communityStateValue.snippetsFetched) buildUserHomeFeed();
   }, [communityStateValue.snippetsFetched]);
-
+  
   useEffect(() => {
     if (!user && !loadingUser) buildNoUserHomeFeed();
   }, [user, loadingUser]);
-
+  
   useEffect(() => {
     if (user && postStateValue.posts.length) getUserPostVotes();
     return () => {
@@ -121,6 +135,7 @@ const Home: NextPage = () => {
       }));
     };
   }, [user, postStateValue.posts]);
+  
   return (
     <PageContent>
       <>
