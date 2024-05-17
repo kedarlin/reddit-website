@@ -9,6 +9,7 @@ import {
   Spinner,
   Stack,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import moment from "moment";
 import Link from "next/link";
@@ -55,7 +56,8 @@ const PostItem: React.FC<PostItemProps> = ({
   const [loadingDelete, setLoadingDelete] = useState(false);
   const router = useRouter();
   const singlePostPage = !onSelectPost;
-
+  const isMediumScreen = useBreakpointValue({ base: false, md: true });
+  
   const handleDelete = async (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -116,17 +118,17 @@ const PostItem: React.FC<PostItemProps> = ({
           cursor="pointer"
         />
       </Flex>
-      <Flex direction="column" width="90%">
+      <Flex direction="column" width="100%">
         {error && (
           <Alert status="error">
             <AlertIcon />
             <Text mr={2}>{error}</Text>
           </Alert>
         )}
-        <Stack spacing={1} p="10px">
-          <Stack spacing={0.6} direction="row" align="center" fontSize="10pt">
+        <Stack spacing={3} p="10px">
+          <Stack spacing={0.6} direction={isMediumScreen ? "row" : "column"} align={isMediumScreen ? "center" : "left"} fontSize="10pt">
             {homePage && (
-              <>
+              <Flex alignItems="center">
                 {post.commnuityImageURL ? (
                   <Image
                     src={post.commnuityImageURL}
@@ -147,9 +149,9 @@ const PostItem: React.FC<PostItemProps> = ({
                   </Text>
                 </Link>
                 <Icon as={BsDot} color="gray.500" fontSize={8} />
-              </>
+              </Flex>
             )}
-            <Text>
+            <Text fontSize={isMediumScreen ? "10pt" : "9pt"}>
               Posted by u/{post.creatorDisplayName}{" "}
               {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
             </Text>
@@ -181,7 +183,7 @@ const PostItem: React.FC<PostItemProps> = ({
             _hover={{ bg: "gray.200" }}
             cursor="pointer"
           >
-            <Icon as={BsChat} mr={2} />
+            <Icon as={BsChat} mr={2} fontSize={isMediumScreen ? "14pt" : "16pt"}/>
             <Text fontSize="9pt">{post.numberOfComments}</Text>
           </Flex>
           <Flex
@@ -191,8 +193,8 @@ const PostItem: React.FC<PostItemProps> = ({
             _hover={{ bg: "gray.200" }}
             cursor="pointer"
           >
-            <Icon as={IoArrowRedoOutline} mr={2} />
-            <Text fontSize="9pt">Share</Text>
+            <Icon as={IoArrowRedoOutline} mr={isMediumScreen ? "2" : "0"} fontSize={isMediumScreen ? "14pt" : "16pt"}/>
+            <Text fontSize="9pt" display={isMediumScreen ? "contents" : "none"}>Share</Text>
           </Flex>
           <Flex
             align="center"
@@ -201,8 +203,8 @@ const PostItem: React.FC<PostItemProps> = ({
             _hover={{ bg: "gray.200" }}
             cursor="pointer"
           >
-            <Icon as={IoBookmarkOutline} mr={2} />
-            <Text fontSize="9pt">Save</Text>
+            <Icon as={IoBookmarkOutline} mr={isMediumScreen ? "2" : "0"} fontSize={isMediumScreen ? "14pt" : "16pt"} />
+            <Text fontSize="9pt" display={isMediumScreen ? "contents" : "none"}>Save</Text>
           </Flex>
           {userIsCreator && (
             <Flex
@@ -217,8 +219,8 @@ const PostItem: React.FC<PostItemProps> = ({
                 <Spinner size="sm" />
               ) : (
                 <>
-                  <Icon as={AiOutlineDelete} mr={2} />
-                  <Text fontSize="9pt">Delete Post</Text>
+                  <Icon as={AiOutlineDelete} mr={2} fontSize={isMediumScreen ? "14pt" : "16pt"}/>
+                  <Text fontSize="9pt" display={isMediumScreen ? "contents" : "none"}>Delete Post</Text>
                 </>
               )}
             </Flex>
