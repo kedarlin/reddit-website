@@ -2,17 +2,13 @@ import { Flex } from "@chakra-ui/react";
 import React from "react";
 
 type PageContentProps = {
-    children: any;
+  children: any;
 };
 
 const PageContent: React.FC<PageContentProps> = ({ children }) => {
   return (
     <Flex justify="center" p="16px 0px">
-      <Flex
-        width="95%"
-        justify="center"
-        maxWidth="860px"
-      >
+      <Flex width="95%" justify="center" maxWidth="860px" mt="44px">
         <Flex
           direction="column"
           width={{ base: "100%", md: "65%" }}

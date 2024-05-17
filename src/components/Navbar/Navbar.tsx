@@ -16,7 +16,10 @@ const Navbar: React.FC = () => {
       bg="white"
       height="44px"
       padding="6px 12px"
-      justify={{ md: "dpace-between" }}
+      justify={{ md: "space-between" }}
+      position="fixed"
+      width="100%"
+      zIndex={20}
     >
       <Flex
         align="center"
