@@ -1,0 +1,26 @@
+[
+    {
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+        "namespace": "com.vrfi.app.dev",
+        "package_name": "com.vrfi.app.dev",
+        "sha256_cert_fingerprints":
+            [
+                "38:B5:AE:69:AE:DE:8C:DE:8C:A5:53:B4:0D:08:BA:30:4B:80:09:E8:9C:9E:50:CD:DB:D4:2A:EE:EE:8E:9C:B2",
+                "68:ED:37:3C:CA:2F:4E:0E:A4:25:DB:7F:FE:94:C2:C9:00:BC:8F:50:E2:19:28:62:14:5F:7E:4C:9E:55:48:C6"
+            ]
+        }
+    },
+    {
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+        "namespace": "com.vrfi.app",
+        "package_name": "com.vrfi.app",
+        "sha256_cert_fingerprints":
+            [
+                "38:B5:AE:69:AE:DE:8C:DE:8C:A5:53:B4:0D:08:BA:30:4B:80:09:E8:9C:9E:50:CD:DB:D4:2A:EE:EE:8E:9C:B2",
+                "68:ED:37:3C:CA:2F:4E:0E:A4:25:DB:7F:FE:94:C2:C9:00:BC:8F:50:E2:19:28:62:14:5F:7E:4C:9E:55:48:C6"
+            ]
+        }
+    }
+]
